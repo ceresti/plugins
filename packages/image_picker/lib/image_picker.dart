@@ -35,11 +35,11 @@ class ImagePicker {
   ///
   /// In Android, the MainActivity can be destroyed for various reasons. If that happens, the result will be lost
   /// in this call. You can then call [retrieveLostData] when your app relaunches to retrieve the lost data.
-  static Future<File> pickImage({
-    @required ImageSource source,
-    double maxWidth,
-    double maxHeight,
-  }) async {
+  static Future<File> pickImage(
+      {@required ImageSource source,
+      double maxWidth,
+      double maxHeight,
+      bool override = false}) async {
     assert(source != null);
 
     if (maxWidth != null && maxWidth < 0) {
@@ -59,6 +59,7 @@ class ImagePicker {
         'source': source.index,
         'maxWidth': maxWidth,
         'maxHeight': maxHeight,
+        'override': override
       },
     );
 
@@ -72,9 +73,8 @@ class ImagePicker {
   ///
   /// In Android, the MainActivity can be destroyed for various fo reasons. If that happens, the result will be lost
   /// in this call. You can then call [retrieveLostData] when your app relaunches to retrieve the lost data.
-  static Future<File> pickVideo({
-    @required ImageSource source,
-  }) async {
+  static Future<File> pickVideo(
+      {@required ImageSource source, bool override = false}) async {
     assert(source != null);
 
     // TODO(amirh): remove this on when the invokeMethod update makes it to stable Flutter.
@@ -82,9 +82,7 @@ class ImagePicker {
     // ignore: strong_mode_implicit_dynamic_method
     final String path = await _channel.invokeMethod(
       'pickVideo',
-      <String, dynamic>{
-        'source': source.index,
-      },
+      <String, dynamic>{'source': source.index, 'override': override},
     );
     return path == null ? null : File(path);
   }

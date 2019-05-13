@@ -222,7 +222,8 @@ public class ImagePickerDelegate
   }
 
   public void chooseVideoFromGallery(MethodCall methodCall, MethodChannel.Result result) {
-    if (!setPendingMethodCallAndResult(methodCall, result)) {
+    boolean override = methodCall.hasArgument("override") && (boolean) methodCall.argument("override");
+    if (!setPendingMethodCallAndResult(methodCall, result, override)) {
       finishWithAlreadyActiveError(result);
       return;
     }
@@ -244,7 +245,8 @@ public class ImagePickerDelegate
   }
 
   public void takeVideoWithCamera(MethodCall methodCall, MethodChannel.Result result) {
-    if (!setPendingMethodCallAndResult(methodCall, result)) {
+    boolean override = methodCall.hasArgument("override") && (boolean) methodCall.argument("override");
+    if (!setPendingMethodCallAndResult(methodCall, result, override)) {
       finishWithAlreadyActiveError(result);
       return;
     }
@@ -279,7 +281,8 @@ public class ImagePickerDelegate
   }
 
   public void chooseImageFromGallery(MethodCall methodCall, MethodChannel.Result result) {
-    if (!setPendingMethodCallAndResult(methodCall, result)) {
+    boolean override = methodCall.hasArgument("override") && (boolean) methodCall.argument("override");
+    if (!setPendingMethodCallAndResult(methodCall, result, override)) {
       finishWithAlreadyActiveError(result);
       return;
     }
@@ -301,7 +304,8 @@ public class ImagePickerDelegate
   }
 
   public void takeImageWithCamera(MethodCall methodCall, MethodChannel.Result result) {
-    if (!setPendingMethodCallAndResult(methodCall, result)) {
+    boolean override = methodCall.hasArgument("override") && (boolean) methodCall.argument("override");
+    if (!setPendingMethodCallAndResult(methodCall, result, override)) {
       finishWithAlreadyActiveError(result);
       return;
     }
@@ -518,8 +522,8 @@ public class ImagePickerDelegate
   }
 
   private boolean setPendingMethodCallAndResult(
-      MethodCall methodCall, MethodChannel.Result result) {
-    if (pendingResult != null) {
+          MethodCall methodCall, MethodChannel.Result result, boolean override) {
+    if (!override && pendingResult != null) {
       return false;
     }
 
